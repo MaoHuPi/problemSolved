@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+    <head>
+        <!-- [Re] https://ithelp.ithome.com.tw/questions/10208971 -->
+        <!-- 2022 MaoHuPi -->
+        <title>Videojs Test</title>
+        <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
+        <style>
+            * {
+                cursor: none !important;
+            }
+            html, body {
+                margin: 0px;
+                padding: 0px;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .cssCursor {
+                width: 1.5vw;
+                height: 1.5vw;
+                border-style: solid;
+                border-width: 0.2vw;
+                border-color: gray;
+                border-radius: 50%;
+                position: fixed;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none;
+                z-index: 999;
+            }
+            .cssCursor > div {
+                width: 0.4vw;
+                height: 0.4vw;
+                background-color: black;
+                border-radius: 50%;
+                position: fixed;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="cssCursor"><div></div></div>
+        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+            <source src="https://docs.microsoft.com/video/media/d0ef63e4-5a13-44f4-9e46-854ee30445ea/s2video23-650testingamodel_high.mp4" type="video/mp4" />
+        </video>
+        <script src="https://vjs.zencdn.net/7.19.2/video.min.js"></script>
+        <script>    
+            function createCssCursor(){
+                newCssCursor = document.createElement('div');
+                dot = document.createElement('div');
+                newCssCursor.className = 'cssCursor';
+                newCssCursor.appendChild(dot);
+                return(newCssCursor);
+            }    
+            function cursorSetLoop(){
+                document.querySelectorAll('.vjs-fullscreen').forEach(vjsBox => {
+                    if(vjsBox.getAttribute('cssCursorAdded') != 'true'){
+                        vjsBox.appendChild(createCssCursor());
+                        vjsBox.setAttribute('cssCursorAdded', 'true');
+                    }
+                });
+                document.querySelectorAll('[cssCursorAdded="true"]:not(.vjs-fullscreen)').forEach(vjsBox => {
+                    vjsBox.querySelector('.cssCursor').remove();
+                    vjsBox.removeAttribute('cssCursorAdded');
+                });
+                setTimeout(cursorSetLoop, 30);
+            }
+            function cssCursorControll(event){
+                document.querySelectorAll('.cssCursor').forEach(cssCursor => {
+                    cssCursor.style.top = event.pageY - cssCursor.offsetHeight/2 + 'px';
+                    cssCursor.style.left = event.pageX - cssCursor.offsetWidth/2 + 'px';
+                });
+            }
+            document.body.addEventListener('mouseclick', cssCursorControll);
+            document.body.addEventListener('mousemove', cssCursorControll);
+            cursorSetLoop();
+            </script>
+    </body>
+</html>
