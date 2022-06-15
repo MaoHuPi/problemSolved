@@ -1,3 +1,4 @@
+/* 2022 © MaoHuPi */
 function decode(code){
     code = code.split('%');
     newCode = code[0];
