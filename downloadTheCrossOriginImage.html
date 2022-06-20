@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- [Re] https://ithelp.ithome.com.tw/questions/10209051 -->
+    <!-- 2022 © MaoHuPi -->
+    <title>download the cross origin image</title>
+</head>
+<body>
+    <a href="javascript:download23569861();">Download</a>
+    <script>
+        function download23569861(){
+            let cvs = document.createElement('canvas'), 
+                ctx = cvs.getContext('2d');
+            // document.body.appendChild(cvs);
+            let img = document.createElement('img');
+            img.onload = () => {
+                cvs.width = img.width;
+                cvs.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                var url = cvs.toDataURL();
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = '23569861-sample-grunge-red-round-stamp.jpg';
+                a.click();
+            };
+            img.crossOrigin = 'anonymous';
+            img.src = 'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-sample-grunge-red-round-stamp.jpg';
+        }
+    </script>
+</body>
+</html>
