@@ -13,11 +13,11 @@
     article['id'] = $('div.chaptercount', box).innerText;
     article['title'] = $('h2.chaptername', box).innerText;
     article['author'] = $('.authorname', box).innerText.sj('\n', '');
-    article['date'] = $('.readbar [aria-describedby="qtip-0"]', box).innerText.sj('\n', '');
-    article['view'] = $('.readbar [aria-describedby="qtip-2"]', box).innerText.sj('\n', '');
+    article['date'] = $('.readbar .center > *:nth-child(1)', box).innerText.sj('\n', '');
+    article['view'] = $('.readbar .center > *:nth-child(2)', box).innerText.sj('\n', '');
     article['like'] = $('[class^="likecount"]', box).innerText.sj('\n', '');
     article['comment'] = $('[class*="cmtcount"]', box).innerText.sj('\n', '');
-    article['spend'] = $('.readbar [aria-describedby="qtip-3"]', box).innerText.sj('\n', '');
+    article['spend'] = $('.readbar .center > *:nth-child(3)', box).innerText.sj('\n', '');
     Array.from($$(`article *:where(span[class], span.displaynone, span[style^="display:none"], p[style^="display:none"])`, box))
     .forEach(element => element.remove());
     Array.from($$(`article *:where(br)`, box))
