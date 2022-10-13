@@ -1,6 +1,7 @@
 /*
  * 2022 © MaoHuPi
- * fileName: penanaFreeUnlock.js
+ * penana/freeUnlock.js
+ *
  * createTime: 2022/08/27-22:04
  * notes: 已於2022/08/27-21:39向Penana官方回報此錯誤
  */
