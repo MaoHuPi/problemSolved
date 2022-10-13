@@ -1,6 +1,6 @@
 /*
  * 2022 © MaoHuPi
- * penanaCopyArticle.js
+ * penana/copyArticle.js
  */
 ((num = 0, toLog = false, toCopy = false) => {
     const $ = function(e, f = document){return(f.querySelector(e));};
