@@ -1,3 +1,7 @@
+/*
+ * 2022 © MaoHuPi
+ * penana/copyArticleHtml.js
+ */
 ((storyId, chapterId = 0) => {
     function sendXmlhttp(name = '', value = '', responseFunction = t => {console.log(t);}, type = 'get'){
         let xmlhttp = new XMLHttpRequest();
