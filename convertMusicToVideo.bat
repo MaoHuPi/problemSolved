@@ -1,0 +1,5 @@
+@REM # ffmpeg -loop 1 -i "./image/cover(vocal).png" -i "./music/CJY413(music + vocal).wav" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "./video/CJY413(vocal).mp4"
+@REM # ffmpeg -loop 1 -i "./image/cover(music).png" -i "./music/CJY413(music).wav" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "./video/CJY413(music).mp4"
+set /P "projectName=projectName:" 
+ffmpeg -loop 1 -i "./%projectName%/image/cover(vocal).png" -i "./%projectName%/music/%projectName%(music + vocal).wav" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "./%projectName%/video/%projectName%(vocal).mp4"
+ffmpeg -loop 1 -i "./%projectName%/image/cover(music).png" -i "./%projectName%/music/%projectName%(music).wav" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "./%projectName%/video/%projectName%(music).mp4"
