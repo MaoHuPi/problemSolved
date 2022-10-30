@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v1.1.0
+ * v2.0.0
  */
 
 /* basic */
@@ -128,6 +128,74 @@ MeowJS.init = function init(){
 
     /* style */
     this.addStyleElement(`
+        html {
+            --pinImage: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="white"><path d="m31.7 25.6 4.3 3.85v3H25.5V44.5L24 46l-1.5-1.5V32.45H12v-3l4-3.85V9h-2.5V6h20.7v3h-2.5Zm-15.65 3.85h15.6L28.7 26.7V9H19v17.7Zm7.8 0Z"/></svg>');
+            --pumpkinImage: url('https://maohupi.github.io/problemSolved/image/pumpkin.png');
+        }
+    `);
+    this.addStyleElement(`
+        [meowTheme] .post-entry {
+            transition: 0.5s;
+        }
+        [meowTheme] .post-entry * {
+            color: var(--entry-content);
+        }
+        [meowTheme] .post-entry:hover {
+            box-shadow: 0px 0px 1vw orange;
+        }
+        body[meowTheme], [meowTheme] body {
+            background-color: var(--theme) !important;
+            background-image: var(--backgroundImage) !important;
+            background-size: 50vmin !important;
+            background-position: right bottom !important;
+            background-repeat: no-repeat !important;
+            background-blend-mode: luminosity !important;
+            background-attachment: fixed !important;
+        }
+        body[meowTheme].dark, [meowTheme] body.dark {
+            background-blend-mode: hard-light !important;
+        }
+
+        [meowTheme="halloween"] {
+            --theme: #ffeccc;
+            --entry: #0008;
+            --primary: #7c3400;
+            --primary-dim: #bababa;
+            --secondary: #be6500;
+            --tertiary: #7b7c7c;
+            --tertiary-bg: #ffd3a9;
+            --content: black;
+            --code-bg: var(--theme);
+            --border: #ffb100;
+            --link-background-color: #ffa5006d;
+            --link-color: var(--primary);
+            --link-hover-color: #ffd26c;
+            --link-underline-shadow: 0 1px 0var( --link-color);
+            --link-hover-underline-color: var(--link-hover-color);
+            --link-hover-underline-shadow: 0 2px 0 var(--link-hover-underline-color);
+            --backgroundImage: var(--pumpkinImage);
+        }
+        [meowTheme="halloween"].dark {
+            --theme: #13041f;
+            --entry: #0008;
+            --primary: #fff2e0;
+            --primary-dim: #bababa;
+            --secondary: #d9b0ff;
+            --tertiary: #7b7c7c;
+            --tertiary-bg: #51298a;
+            --content: white;
+            --code-bg: var(--theme);
+            --border: #ffb100;
+            --link-background-color: #51298a;
+            --link-color: var(--primary);
+            --link-hover-color: #ffd26c;
+            --link-underline-shadow: 0 1px 0var(--link-color);
+            --link-hover-underline-color: var(--link-hover-color);
+            --link-hover-underline-shadow: 0 2px 0 var(--link-hover-underline-color);
+            --backgroundImage: var(--pumpkinImage);
+        }
+    `);
+    this.addStyleElement(`
         a.linkTag {
             --marginTB: 0.1vw;
             --paddingTB: 0.1vw;
@@ -227,9 +295,17 @@ MeowJS.init = function init(){
         a.linkBox_aniEle[linkBox_aniEle_2] > * {
             transform: scale(5);
         }
+        :where(span, a).pinned {
+            color: transparent !important;
+            background-image: var(--pinImage);
+            background-size: contain;
+            background-position: left center;
+            background-repeat: no-repeat;
+        }
     `);
 
     /* attribute */
+    document.body.setAttribute('meowTheme', 'halloween');
     document.querySelectorAll('a[href]').forEach(a => {
         if([null, undefined, 'false'].indexOf(a.getAttribute('meowInit')) > -1){
             if(['Github', 'Discord'].indexOf(a.innerText) > -1){
@@ -245,6 +321,15 @@ MeowJS.init = function init(){
             a.setAttribute('meowContent', a.innerText);
             MeowJS.addClass(a, 'linkBox');
             a.setAttribute('meowInit', 'true');
+        }
+    });
+    document.querySelectorAll(':where(span, a).entry-isdraft').forEach(span => {
+        if([null, undefined, 'false'].indexOf(span.getAttribute('meowInit')) > -1){
+            if(['[Pinned]', '  [Pinned]', '  [Pinned]', '&nbsp;&nbsp;[Pinned]'].indexOf(span.innerText) > -1){
+                span.setAttribute('meowContent', span.innerText);
+                MeowJS.addClass(span, 'pinned');
+                span.setAttribute('meowInit', 'true');
+            }
         }
     });
 }
