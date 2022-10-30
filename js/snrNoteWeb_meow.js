@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v3.0.0
+ * v3.0.1
  */
 
 /* basic */
@@ -110,14 +110,14 @@ request.livingElement = () => {
             }
         });
         setTimeout(update, 30);
-        $$('html, body').forEach(element => {
-            if(element.style.overflow != 'hidden'){
-                element.style.overflow = 'hidden';
-            }
-        });
     }
     function main(){
         update();
+        // $$('html, body').forEach(element => {
+        //     if(element.style.overflow != 'hidden'){
+        //         element.style.overflow = 'hidden';
+        //     }
+        // });
     }
     main();
 }
