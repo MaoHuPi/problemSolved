@@ -1,6 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
+ * v1.1.0
  */
 
 /* basic */
@@ -20,6 +21,26 @@ MeowJS.radToDeg = function radToDeg(rad = 0){
 }
 MeowJS.degToRad = function degToRad(deg = 0){
     return(deg/180*Math.PI);
+}
+MeowJS.offset = function offset(element, type){
+    var elementData = {
+        height: element.offsetHeight, 
+        width: element.offsetWidth, 
+        top: 0, 
+        left: 0
+    };
+    if(!(type in ['width', 'height'])){
+        while(element !== document.body){
+            if(type == 'left'){
+                elementData.left += element.offsetLeft;
+            }
+            if(type == 'top'){
+                elementData.top += element.offsetTop;
+            }
+            element = element.offsetParent;
+        }
+    }
+    return(elementData[type]);
 }
 MeowJS.mouse.moveing = function moveing(){
     return((MeowJS.time() - this.moveTime) < 50);
@@ -44,13 +65,12 @@ MeowJS.addClass = function addClass(element, className){
             // });
             element.addEventListener('click', event => {
                 event.preventDefault();
-                element.style.opacity = 0;
-                element.style.pointerEvent = 'none';
+                element.setAttribute('meowClick', '');
                 
                 var a = document.createElement('a');
                 a.className = element.className;
                 a.innerHTML = element.innerHTML;
-                a.setAttribute('meowClick', '');
+                a.className += ' linkTag_aniEle';
                 a.style.setProperty('--rotateZ', `${MeowJS.radToDeg(Math.atan(MeowJS.vh()/MeowJS.vw()))}deg`);
                 var scale = 10;
                 a.style.setProperty('--translateX', `${((100*MeowJS.vw()**2) + (100*MeowJS.vh()**2)**0.5)/scale}px`);
@@ -59,11 +79,36 @@ MeowJS.addClass = function addClass(element, className){
                 a.style.setProperty('--animationDuration', `${animationDuration}s`);
                 document.body.appendChild(a);
                 setTimeout(() => {
-                    element.style.opacity = 1;
-                    element.style.pointerEvent = 'auto';
+                    element.removeAttribute('meowClick');
                     a.remove();
                     location.href = element.getAttribute('href');
-                }, animationDuration * 1e3);
+                }, animationDuration * 1e3 - 0.5e3);
+            });
+        }, 
+        linkBox: function linkBox(element){
+            element.addEventListener('click', event => {
+                event.preventDefault();
+                element.setAttribute('meowClick', '');
+                
+                var a = document.createElement('a');
+                a.className = element.className;
+                a.innerHTML = element.innerHTML;
+                a.className += ' linkBox_aniEle';
+                a.style.setProperty('--top', `${MeowJS.offset(element, 'top') - document.querySelector('html').scrollTop}px`);
+                a.style.setProperty('--left', `${MeowJS.offset(element, 'left')}px`);
+                a.style.setProperty('--width', `${MeowJS.offset(element, 'width')}px`);
+                a.style.setProperty('--height', `${MeowJS.offset(element, 'height')}px`);
+                document.body.appendChild(a);
+                var animationDuration = 3;
+                setTimeout(() => {
+                    a.setAttribute('linkBox_aniEle_2', '');
+                    a.style.setProperty('--animationDuration', `${animationDuration}s`);
+                }, 100);
+                setTimeout(() => {
+                    // element.removeAttribute('meowClick');
+                    // a.remove();
+                    location.href = element.getAttribute('href');
+                }, animationDuration * 1e3 - 0.5e3);
             });
         }
     };
@@ -107,6 +152,10 @@ MeowJS.init = function init(){
             background-color: var(--hoveredBackground);
             transform: rotate(360deg);
         }
+        a.linkTag[meowClick] {
+            opacity: 0;
+            pointer-event: none;
+        }
         @keyframes linkTag_click{
             0% {
                 transform: rotateZ(0deg) translateX(0px) scale(1) translateZ(10px);
@@ -121,7 +170,7 @@ MeowJS.init = function init(){
                 transform: rotateZ(var(--rotateZ)) translateX(var(--translateX)) scale(var(--scale)) translateZ(10px);
             }
         }
-        a.linkTag[meowClick] {
+        a.linkTag_aniEle {
             --rotateZ: 45deg;
             --translateX: 100vw;
             --scale: 10;
@@ -142,20 +191,59 @@ MeowJS.init = function init(){
             --defaultBackground: #404eed;
             --hoveredBackground: #5865f2;
         }
+        a.linkBox[meowClick] {
+            opacity: 0;
+            pointer-event: none;
+        }
+        a.linkBox_aniEle {
+            --top: 0px;
+            --left: 0px;
+            --width: 0px;
+            --height: 0px;
+            --animationDuration: 3s;
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            width: var(--width);
+            height: var(--height);
+            position: fixed;
+            top: var(--top);
+            left: var(--left);
+            transition: var(--animationDuration);
+            z-index: 999;
+        }
+        a.linkBox_aniEle > * {
+            transition: var(--animationDuration);
+            transform: scale(1);
+        }
+        a.linkBox_aniEle[linkBox_aniEle_2] {
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+        }
+        a.linkBox_aniEle[linkBox_aniEle_2] > * {
+            transform: scale(5);
+        }
     `);
 
     /* attribute */
     document.querySelectorAll('a[href]').forEach(a => {
         if([null, undefined, 'false'].indexOf(a.getAttribute('meowInit')) > -1){
+            if(['Github', 'Discord'].indexOf(a.innerText) > -1){
+                a.setAttribute('meowContent', a.innerText);
+                MeowJS.addClass(a, 'linkTag');
+                MeowJS.addClass(a, `${a.innerText.toLowerCase()}Link`);
+                a.setAttribute('meowInit', 'true');
+            }
+        }
+    });
+    document.querySelectorAll('.buttons > a.button[href]').forEach(a => {
+        if([null, undefined, 'false'].indexOf(a.getAttribute('meowInit')) > -1){
             a.setAttribute('meowContent', a.innerText);
-            if(a.innerText == 'Github'){
-                this.addClass(a, 'linkTag');
-                this.addClass(a, 'githubLink');
-            }
-            else if(a.innerText == 'Discord'){
-                this.addClass(a, 'linkTag');
-                this.addClass(a, 'discordLink');
-            }
+            MeowJS.addClass(a, 'linkBox');
             a.setAttribute('meowInit', 'true');
         }
     });
