@@ -1,0 +1,62 @@
+<p>
+    <tip color="red">
+        <tip color="yellow">123<ttt>一二三</ttt></tip><tip color="orange">456<ttt>四五六</ttt></tip>
+        <ttt>一二三四五六</ttt>
+    </tip>
+    <br>
+</p>
+<style>
+    html, body {
+        margin: 0px;
+        color: #7b7c7c;
+        background-color: #1d1e20;
+    }
+    p {
+        padding: 2vw;
+    }
+    tip {
+        --color: white;
+        display: inline-block;
+        padding: 0px 0px 2px 0px;
+        position: relative;
+        border-style: solid;
+        border-color: var(--color);
+        border-width: 0px 0px 0.1px 0px;
+        transition: 0.5s;
+    }
+    ttt {
+        opacity: 0;
+        padding: 1px 5px;
+        width: auto;
+        position: absolute;
+        top: -26px;
+        left: 0px;
+        color: #112;
+        background-color: #9b9c9d;
+        border-style: solid;
+        border-color: var(--color);
+        border-width: 0.1px;
+        border-radius: 0.5vw;
+        white-space: nowrap;
+        pointer-events: none;
+        transition: 0.5s;
+    }
+    tip[tipHover] > ttt, ttt:hover {
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
+<script>
+    document.querySelectorAll('tip').forEach(tip => {
+        tip.addEventListener('mouseover', event => {
+            event.stopPropagation();
+            document.querySelectorAll('tip[tipHover]').forEach(tip => tip.removeAttribute('tipHover'));
+            tip.setAttribute('tipHover', '');
+        });
+        tip.addEventListener('mouseleave', event => {
+            // event.stopPropagation();
+            tip.removeAttribute('tipHover');
+        });
+        tip.style.setProperty('--color', tip.getAttribute('color'));
+    });
+</script>
