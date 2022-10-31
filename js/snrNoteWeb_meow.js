@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v4.0.0
+ * v4.1.0
  */
 
 /* basic */
@@ -30,7 +30,7 @@ request.livingElement = () => {
             top:0, 
             left:0
         };
-        while(element !== document.body && element.offsetParent){
+        while(element !== document.body && element && element.offsetParent){
             data.left += element.offsetLeft;
             data.top += element.offsetTop;
             element = element.offsetParent;
@@ -164,7 +164,7 @@ MeowJS.offset = function offset(element, type){
         left: 0
     };
     if(!(type in ['width', 'height'])){
-        while(element !== document.body){
+        while(element !== document.body && element  && element.offsetParent){
             if(type == 'left'){
                 elementData.left += element.offsetLeft;
             }
@@ -533,6 +533,21 @@ MeowJS.init = function init(){
         themeBar.appendChild(themeButton);
     }
     document.body.appendChild(themeBar);
+
+    let html = document.querySelector('html');
+    for(let tip of document.querySelectorAll('tips')){
+        tip.addEventListener('mouseover', event => {
+            var tip = event.target;
+            var tipRect = tip.getBoundingClientRect();
+            var text = tip.querySelector('.tooltip-text');
+            console.log(text);
+            text.style.display = 'table';
+            text.style.position = 'fixed';
+            text.style.top = `calc(${MeowJS.offset(tip, 'top') - html.scrollTop - 17}px - 0.4em * 2)`;
+            text.style.left = `${MeowJS.offset(tip, 'left')}px`;
+            text.style.boxSizing = 'border-box';
+        });
+    }
 }
 
 /* init */
