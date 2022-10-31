@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v4.1.0
+ * v4.1.1
  */
 
 /* basic */
@@ -538,12 +538,11 @@ MeowJS.init = function init(){
     for(let tip of document.querySelectorAll('tips')){
         tip.addEventListener('mouseover', event => {
             var tip = event.target;
-            var tipRect = tip.getBoundingClientRect();
             var text = tip.querySelector('.tooltip-text');
             console.log(text);
             text.style.display = 'table';
             text.style.position = 'fixed';
-            text.style.top = `calc(${MeowJS.offset(tip, 'top') - html.scrollTop - 17}px - 0.4em * 2)`;
+            text.style.top = `calc(${MeowJS.offset(tip, 'top') - html.scrollTop - 17 - MeowJS.offset(text, 'height')}px + 0.4em * 2)`;
             text.style.left = `${MeowJS.offset(tip, 'left')}px`;
             text.style.boxSizing = 'border-box';
         });
