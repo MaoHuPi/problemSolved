@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v4.1.1
+ * v4.1.2
  */
 
 /* basic */
@@ -535,18 +535,23 @@ MeowJS.init = function init(){
     document.body.appendChild(themeBar);
 
     let html = document.querySelector('html');
-    for(let tip of document.querySelectorAll('tips')){
-        tip.addEventListener('mouseover', event => {
-            var tip = event.target;
-            var text = tip.querySelector('.tooltip-text');
-            console.log(text);
-            text.style.display = 'table';
-            text.style.position = 'fixed';
-            text.style.top = `calc(${MeowJS.offset(tip, 'top') - html.scrollTop - 17 - MeowJS.offset(text, 'height')}px + 0.4em * 2)`;
-            text.style.left = `${MeowJS.offset(tip, 'left')}px`;
-            text.style.boxSizing = 'border-box';
-        });
+    function setTipTextPosition(){
+        var tip = this;
+        var text = tip.querySelector('.tooltip-text');
+        text.style.display = 'table';
+        text.style.position = 'fixed';
+        text.style.top = `calc(${MeowJS.offset(tip, 'top') - html.scrollTop - 17 - MeowJS.offset(text, 'height')}px + 0.4em * 2)`;
+        text.style.left = `${MeowJS.offset(tip, 'left')}px`;
+        text.style.boxSizing = 'border-box';
     }
+    for(let tip of document.querySelectorAll('tips')){
+        tip.addEventListener('mouseover', setTipTextPosition);
+    }
+    window.addEventListener('wheel', () => {
+        for(let tip of document.querySelectorAll('tips')){
+            setTipTextPosition.bind(tip)();
+        }
+    });
 }
 
 /* init */
