@@ -1,7 +1,7 @@
 /*
  * 2022 © MaoHuPi
  * snrNoteWeb_meow.js
- * v3.0.1
+ * v4.0.0
  */
 
 /* basic */
@@ -121,6 +121,23 @@ request.livingElement = () => {
     }
     main();
 }
+request.basic = () => {
+    const $_GET = {}, 
+    $_COOKIE = {};
+    if(location.href.indexOf('?') > -1){
+        location.href.split('?')[1].split('&').forEach(kv => {
+            kv = kv.split('=');
+            $_GET[kv[0]] = kv[1];
+        });
+    }
+    if(document.cookie !== ''){
+        document.cookie.split('; ').forEach(kv => {
+            kv = kv.split('=');
+            $_COOKIE[kv[0]] = kv[1];
+        });
+    }
+    return({$_GET: $_GET, $_COOKIE: $_COOKIE})
+}
 
 const MeowJS = {};
 MeowJS.mouse = {x: 0, y: 0, moveTime: 0};
@@ -238,6 +255,9 @@ let ot = 0;
 MeowJS.init = function init(){
     /* lib */
     request.livingElement();
+    var basic = request.basic();
+    var getArg = basic.$_GET;
+    var cookieArg = basic.$_COOKIE;
 
     /* listener */
     window.addEventListener('mousemove', event => {
@@ -249,11 +269,38 @@ MeowJS.init = function init(){
     /* style */
     this.addStyleElement(`
         html {
+            --meow_themeBar-background: #00000055;
+            --meow_themeBar-button-background: white;
             --pinImage: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="white"><path d="m31.7 25.6 4.3 3.85v3H25.5V44.5L24 46l-1.5-1.5V32.45H12v-3l4-3.85V9h-2.5V6h20.7v3h-2.5Zm-15.65 3.85h15.6L28.7 26.7V9H19v17.7Zm7.8 0Z"/></svg>');
             --pumpkinImage: url('https://maohupi.github.io/problemSolved/image/pumpkin.png');
+            --defaultIconImage: url('https://maohupi.github.io/problemSolved/image/cross_icon.png');
+            --halloweenIconImage: url('https://maohupi.github.io/problemSolved/image/pumpkin_icon.png');
         }
     `);
     this.addStyleElement(`
+        #meow_themeBar {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            align-items: center;
+            gap: 0.5vw;
+            padding: 0.5vw;
+            position: fixed;
+            top: calc(var(--header-height) + 60px);
+            right: 30px;
+            background-color: var(--meow_themeBar-background);
+            border-radius: 0.5vw;
+        }
+        #meow_themeBar > button {
+            width: 3vw;
+            height: 3vw;
+            background-color: var(--meow_themeBar-button-background);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: center;
+            border-radius: 0.5vw;
+        }
         [meowTheme] .post-entry {
             transition: 0.5s;
         }
@@ -261,7 +308,7 @@ MeowJS.init = function init(){
             color: var(--entry-content);
         }
         [meowTheme] .post-entry:hover {
-            box-shadow: 0px 0px 1vw orange;
+            box-shadow: var(--entry-shadow);
         }
         body[meowTheme], [meowTheme] body {
             background-color: var(--theme) !important;
@@ -278,7 +325,8 @@ MeowJS.init = function init(){
 
         [meowTheme="halloween"] {
             --theme: #ffeccc;
-            --entry: #0008;
+            --entry: white;
+            --entry-shadow: 0px 0px 1vw orange;
             --primary: #7c3400;
             --primary-dim: #bababa;
             --secondary: #be6500;
@@ -289,15 +337,18 @@ MeowJS.init = function init(){
             --border: #ffb100;
             --link-background-color: #ffa5006d;
             --link-color: var(--primary);
-            --link-hover-color: #ffd26c;
+            --link-hover-color: #f90;
             --link-underline-shadow: 0 1px 0var( --link-color);
             --link-hover-underline-color: var(--link-hover-color);
             --link-hover-underline-shadow: 0 2px 0 var(--link-hover-underline-color);
             --backgroundImage: var(--pumpkinImage);
+            --meow_themeBar-background: #00000055;
+            --meow_themeBar-button-background: white;
         }
         [meowTheme="halloween"].dark {
             --theme: #13041f;
             --entry: #0008;
+            --entry-shadow: 0px 0px 1vw orange;
             --primary: #fff2e0;
             --primary-dim: #bababa;
             --secondary: #d9b0ff;
@@ -313,6 +364,8 @@ MeowJS.init = function init(){
             --link-hover-underline-color: var(--link-hover-color);
             --link-hover-underline-shadow: 0 2px 0 var(--link-hover-underline-color);
             --backgroundImage: var(--pumpkinImage);
+            --meow_themeBar-background: #ffffff55;
+            --meow_themeBar-button-background: white;
         }
     `);
     this.addStyleElement(`
@@ -379,6 +432,10 @@ MeowJS.init = function init(){
             --defaultBackground: #404eed;
             --hoveredBackground: #5865f2;
         }
+        a.linkTag.youtubeLink {
+            --defaultBackground: #ff3f3f;
+            --hoveredBackground: #ff7171;
+        }
         a.linkBox[meowClick] {
             opacity: 0;
             pointer-event: none;
@@ -425,10 +482,12 @@ MeowJS.init = function init(){
     `);
 
     /* attribute */
-    document.body.setAttribute('meowTheme', 'halloween');
+    if('meowTheme' in cookieArg){
+        document.body.setAttribute('meowTheme', cookieArg['meowTheme']);
+    }
     document.querySelectorAll('a[href]').forEach(a => {
         if([null, undefined, 'false'].indexOf(a.getAttribute('meowInit')) > -1){
-            if(['Github', 'Discord'].indexOf(a.innerText) > -1){
+            if(['Github', 'Discord', 'Youtube', 'Website'].indexOf(a.innerText) > -1){
                 a.setAttribute('meowContent', a.innerText);
                 MeowJS.addClass(a, 'linkTag');
                 MeowJS.addClass(a, `${a.innerText.toLowerCase()}Link`);
@@ -458,6 +517,22 @@ MeowJS.init = function init(){
             img.setAttribute('meowInit', 'true');
         }
     });
+    let themeBar = document.createElement('div');
+    themeNames = ['default', 'halloween'];
+    themeBar.id = 'meow_themeBar';
+    for(themeName of themeNames){
+        var themeButton = document.createElement('button');
+        themeButton.setAttribute('title', `${themeName} 主題`);
+        themeButton.style.backgroundImage = `var(--${themeName}IconImage)`;
+        themeButton.value = themeName;
+        themeButton.addEventListener('click', function(event){
+            console.log(this.value);
+            document.body.setAttribute('meowTheme', this.value);
+            document.cookie = `meowTheme=${this.value}; path=/`;
+        });
+        themeBar.appendChild(themeButton);
+    }
+    document.body.appendChild(themeBar);
 }
 
 /* init */
