@@ -1,5 +1,5 @@
 ' 2022 © MaoHuPi
-' pdf2word.vba
+' forPdfInDir2word.vba
 
 Function strInList(ByVal str As String, ByVal list As Collection) As Boolean
     Dim listItem as Variant
