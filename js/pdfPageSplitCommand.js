@@ -1,6 +1,6 @@
 /* 
  * 2022 © MaoHuPi
- * pageSplitCommand.js
+ * pdfOCR/pageSplitCommand.js
  */
 
 pageGroupData = [
