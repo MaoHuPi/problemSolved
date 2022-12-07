@@ -1,5 +1,4 @@
 /*
-original: hover_tooltip.js
 amend: 2022/12/07 by MaoHuPi
 */
 
@@ -71,10 +70,10 @@ for (let i = 0; i < tips.length; i++) {
 
     let span = document.createElement('span');
     span.className = 'tooltip-text';
-    span.innerHTML = tip.dataset.c;
+    span.innerHTML = decodeURI(tip.dataset.c);
 
     if (tip.dataset.u) {
-        tip.style.setProperty('--color', tip.dataset.u);
+        tip.style.setProperty('--color', decodeURI(tip.dataset.u));
     }
 
     tip.appendChild(span);
