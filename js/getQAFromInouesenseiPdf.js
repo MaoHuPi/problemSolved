@@ -1,3 +1,6 @@
+/*
+ * 2022 © MaoHuPi
+ */
 function jp(text){
     converted = text
         .split('→ ')
