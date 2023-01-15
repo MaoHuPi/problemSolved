@@ -16,7 +16,7 @@ window.onclick = () => {
         .map(tds => {tds[1] = tds[1]?.querySelectorAll('p')[0]?.innerText; return(tds);})
         .filter(tds => tds.length > 1 && tds[0] && tds[1])
         .map(tds => {tds[1] = `${tds[1]}`.replace(decodeURI('%E2%96%BA'), '').replaceAll(decodeURI('%C2%A0'), ' ').split(' ').filter(text => text.length > 0); return(tds);})
-        .map((tds, i) => `${tds[0]}    ${tds[1].join('    ')}`)
+        .map((tds, i) => [tds[0], tds[1][0], tds[1][tds[1].length-1]].join('    '))
         .join('\n');
     navigator.clipboard.writeText(sheet);
     console.log('Sheet Coppied!');
