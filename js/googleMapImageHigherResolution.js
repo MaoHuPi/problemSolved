@@ -1,5 +1,6 @@
 /*
  * 2022 © MaoHuPi
+ * 提高 GoogleMap 圖像解析度
  * googleMapImageHigherResolution.js
  */
 href = location.href.split('=');
