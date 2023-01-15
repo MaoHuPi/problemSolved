@@ -1,6 +1,8 @@
 /*
  * 2022 © MaoHuPi
+ * [Func] 取得 井上一石PDF講義 中 的題答
  */
+
 function jp(text){
     converted = text
         .split('→ ')
