@@ -1,0 +1,33 @@
+/*
+ * 2023 © MaoHuPi
+ * Routenote addstore form quick settings
+ * https://www.routenote.com/rn/addstore/form/{releaseId}
+*/
+
+var platformRadios = [
+    "#edit-selall", 
+    "#edit-did15", 
+    "#edit-did13", 
+    "#edit-did21", 
+    "#edit-did28", 
+    "#edit-did41", 
+    "#edit-did51", 
+    "#edit-did22"
+];
+for(let radio of platformRadios){
+    radio = document.querySelector(radio);
+    radio.click();
+}
+
+var priceRadios = document.querySelectorAll("[id^=plow]:not([id^=plowest])");
+for(let radio of priceRadios){
+    radio.click();
+}
+
+var otherSettings = {
+    "#edit_album_asset": "Own this asset everywhere except", 
+    "#ms-input-0": ""
+};
+for(k in otherSettings){
+    document.querySelector(k).value = otherSettings[k];
+}
