@@ -1,0 +1,15 @@
+/*
+ * 2023 © MaoHuPi
+ * Routenote final check launch
+ * https://www.routenote.com/rn/addstore/form/{releaseId}
+*/
+
+var buttons = [
+    "#submit_chk", 
+    "[value=\"Distribute Free\"]", 
+    "#rn_btn_ok"
+];
+for(let button of buttons){
+    button = document.querySelector(button);
+    button.click();
+}
