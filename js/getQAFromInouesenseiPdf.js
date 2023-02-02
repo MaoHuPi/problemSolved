@@ -24,6 +24,7 @@ function zh(text){
     return(converted);
 }
 
+/* example */
 // http://ilovejp-blog.com/wp-content/uploads/2019/07/7b8aa8298cf531bd44cfaed78f66f9d5.pdf
 
 // 1 在圖書館唸書
