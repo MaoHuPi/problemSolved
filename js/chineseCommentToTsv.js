@@ -3,8 +3,8 @@
         row = row.split(' ');
         row.shift();
         row = row.join('');
-        row = row.split(':').join('    ');
-        row = row.split('：').join('    ');
+        row = row.split(':').join('\t');
+        row = row.split('：').join('\t');
         return(row);
     }).join('\n');
     copy(tsv);
