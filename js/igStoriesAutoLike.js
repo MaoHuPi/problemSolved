@@ -17,7 +17,7 @@
             await wait(1e3);
             next.click();
         }catch(e){}
-        setTimeout(autoHeart, 3e3);
+        setTimeout(autoHeart, 1.5e3);
     }
     autoHeart();
 })();
