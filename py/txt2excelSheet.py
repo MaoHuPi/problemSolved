@@ -1,6 +1,8 @@
 '''
 2023 © MaoHuPi
 v2.0.1
+
+Python如何針對大量txt檔案，抓取指定資料，並匯出?
 https://ithelp.ithome.com.tw/questions/10212370
 '''
 
