@@ -8,7 +8,6 @@
         let eventListeners = getEventListeners(element);
         for(let type in eventListeners){
             eventListeners[type].forEach(event => {
-                // event.remove();
                 element.removeEventListener(type, event.listener, event.useCapture);
             });
         }
