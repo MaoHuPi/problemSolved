@@ -1,6 +1,7 @@
 /* 
  * 2023 © MaoHuPi
  * removeAllListeners.js
+ * bookmark type: develoop
  * 移除所有事件監聽器
  */
 (() => {
