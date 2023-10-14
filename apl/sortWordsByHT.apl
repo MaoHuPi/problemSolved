@@ -2,6 +2,8 @@
 ⍝ sortWordsByHT.apl
 ⍝ 以首尾字母做單字排序
 
+⍝ Based on TryAPL
+
 L1 ← 'connect' 'animal' 'country' 'collaboration'
 L2 ← 'apple' 'article' 'constructor'
 L3 ← 'quotation' 'animation' 'relative'
